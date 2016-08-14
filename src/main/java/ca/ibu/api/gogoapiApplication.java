@@ -1,5 +1,6 @@
 package ca.ibu.api;
 
+import ca.ibu.api.resources.HelloResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,7 +24,7 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
     @Override
     public void run(final gogoapiConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+            environment.jersey().register(new HelloResource());
     }
 
 }
