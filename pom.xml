@@ -51,7 +51,17 @@
 			<artifactId>mongo-jackson-mapper</artifactId>
 			<version>1.4.2</version>
 		</dependency>
+
+		<!-- auth0 - jwt -->
+		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
 	</dependencies>
+
 
 	<build>
 		<plugins>

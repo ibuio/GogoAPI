@@ -6,7 +6,7 @@
  * Aug 14, 2016
  * 
  */
-package ca.ibu.api.api;
+package ca.ibu.api.api.pojo;
 
 
 /**
