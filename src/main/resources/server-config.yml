@@ -1,5 +1,4 @@
 logging:
-
   appenders:
     - type: file
       # The file to which current statements will be logged.
@@ -22,7 +21,7 @@ server:
   adminConnectors:
   - type: http
     port: 8001
-twilio:
-    accountsid: ${TWILIO_ACCOUNT_SID}
-    authtoken: ${TWILIO_AUTH_TOKEN}
-    numbers: ${TWILIO_NUMBERS}
+#twilio:
+#    accountsid: ACfc6abc644bcdf94532df4e1be88aecae
+#    authtoken: b48c94e8c2eaef57eedfeb43033fd6ea
+#    numbers: "+14387950258"

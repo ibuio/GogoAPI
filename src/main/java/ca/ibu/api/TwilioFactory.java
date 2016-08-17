@@ -16,8 +16,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.dropwizard.lifecycle.Managed;
-import io.dropwizard.setup.Environment;
 
 /**
  * @author jk
@@ -25,16 +23,16 @@ import io.dropwizard.setup.Environment;
  */
 public class TwilioFactory {
 
-    @NotNull
-    @NotEmpty
+    //@NotNull
+    //@NotEmpty
     private String  accountSid;
     
-    @NotNull
-    @NotEmpty
+    //@NotNull
+    //@NotEmpty
     private String authToken;
     
-    @NotNull
-    private List<String> lNumbers;
+    //@NotNull
+    private String lNumbers;
 
     @JsonProperty
     public String getAccountSid() {
@@ -57,12 +55,12 @@ public class TwilioFactory {
     }
 
     @JsonProperty
-    public List<String> getlNumbers() {
+    public String getlNumbers() {
         return lNumbers;
     }
 
     @JsonProperty
-    public void setlNumbers(List<String> lNumbers) {
+    public void setlNumbers(String lNumbers) {
         this.lNumbers = lNumbers;
     }
 

@@ -1,0 +1,67 @@
+INFO  [2016-08-17 01:55:20,629] org.eclipse.jetty.util.log: Logging initialized @4659ms
+INFO  [2016-08-17 01:55:20,986] io.dropwizard.server.DefaultServerFactory: Registering jersey handler with root path prefix: /
+INFO  [2016-08-17 01:55:20,987] io.dropwizard.server.DefaultServerFactory: Registering admin handler with root path prefix: /
+INFO  [2016-08-17 01:55:21,005] io.dropwizard.server.DefaultServerFactory: Registering jersey handler with root path prefix: /
+INFO  [2016-08-17 01:55:21,005] io.dropwizard.server.DefaultServerFactory: Registering admin handler with root path prefix: /
+INFO  [2016-08-17 01:55:21,036] io.dropwizard.server.ServerFactory: Starting gogoapi
+================================================================================
+
+                                                                                                                                                                      
+                                                                                                                                        
+        GGGGGGGGGGGGG                                                                   AAA               PPPPPPPPPPPPPPPPP   IIIIIIIIII
+     GGG::::::::::::G                                                                  A:::A              P::::::::::::::::P  I::::::::I
+   GG:::::::::::::::G                                                                 A:::::A             P::::::PPPPPP:::::P I::::::::I
+  G:::::GGGGGGGG::::G                                                                A:::::::A            PP:::::P     P:::::PII::::::II
+ G:::::G       GGGGGG   ooooooooooo      ggggggggg   ggggg   ooooooooooo            A:::::::::A             P::::P     P:::::P  I::::I  
+G:::::G               oo:::::::::::oo   g:::::::::ggg::::g oo:::::::::::oo         A:::::A:::::A            P::::P     P:::::P  I::::I  
+G:::::G              o:::::::::::::::o g:::::::::::::::::go:::::::::::::::o       A:::::A A:::::A           P::::PPPPPP:::::P   I::::I  
+G:::::G    GGGGGGGGGGo:::::ooooo:::::og::::::ggggg::::::ggo:::::ooooo:::::o      A:::::A   A:::::A          P:::::::::::::PP    I::::I  
+G:::::G    G::::::::Go::::o     o::::og:::::g     g:::::g o::::o     o::::o     A:::::A     A:::::A         P::::PPPPPPPPP      I::::I  
+G:::::G    GGGGG::::Go::::o     o::::og:::::g     g:::::g o::::o     o::::o    A:::::AAAAAAAAA:::::A        P::::P              I::::I  
+G:::::G        G::::Go::::o     o::::og:::::g     g:::::g o::::o     o::::o   A:::::::::::::::::::::A       P::::P              I::::I  
+ G:::::G       G::::Go::::o     o::::og::::::g    g:::::g o::::o     o::::o  A:::::AAAAAAAAAAAAA:::::A      P::::P              I::::I  
+  G:::::GGGGGGGG::::Go:::::ooooo:::::og:::::::ggggg:::::g o:::::ooooo:::::o A:::::A             A:::::A   PP::::::PP          II::::::II
+   GG:::::::::::::::Go:::::::::::::::o g::::::::::::::::g o:::::::::::::::oA:::::A               A:::::A  P::::::::P          I::::::::I
+     GGG::::::GGG:::G oo:::::::::::oo   gg::::::::::::::g  oo:::::::::::ooA:::::A                 A:::::A P::::::::P          I::::::::I
+        GGGGGG   GGGG   ooooooooooo       gggggggg::::::g    ooooooooooo AAAAAAA                   AAAAAAAPPPPPPPPPP          IIIIIIIIII
+                                                  g:::::g                                                                               
+                                      gggggg      g:::::g                                                                               
+                                      g:::::gg   gg:::::g                                                                               
+                                       g::::::ggg:::::::g                                                                               
+                                        gg:::::::::::::g                                                                                
+                                          ggg::::::ggg                                                                                  
+                                             gggggg                                                                                     
+
+================================================================================
+
+
+INFO  [2016-08-17 01:55:21,499] org.eclipse.jetty.setuid.SetUIDListener: Opened application@464649c{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+INFO  [2016-08-17 01:55:21,500] org.eclipse.jetty.setuid.SetUIDListener: Opened admin@7c22d4f{HTTP/1.1,[http/1.1]}{0.0.0.0:8001}
+INFO  [2016-08-17 01:55:21,517] org.eclipse.jetty.server.Server: jetty-9.3.z-SNAPSHOT
+INFO  [2016-08-17 01:55:22,533] io.dropwizard.jersey.DropwizardResourceConfig: The following paths were found for the configured resources:
+
+    GET     /hello (ca.ibu.api.resources.HelloResource)
+
+INFO  [2016-08-17 01:55:22,538] org.eclipse.jetty.server.handler.ContextHandler: Started i.d.j.MutableServletContextHandler@3c904f1e{/,null,AVAILABLE}
+INFO  [2016-08-17 01:55:22,556] io.dropwizard.setup.AdminEnvironment: tasks = 
+
+    POST    /tasks/log-level (io.dropwizard.servlets.tasks.LogConfigurationTask)
+    POST    /tasks/gc (io.dropwizard.servlets.tasks.GarbageCollectionTask)
+
+WARN  [2016-08-17 01:55:22,556] io.dropwizard.setup.AdminEnvironment: 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!    THIS APPLICATION HAS NO HEALTHCHECKS. THIS MEANS YOU WILL NEVER KNOW      !
+!     IF IT DIES IN PRODUCTION, WHICH MEANS YOU WILL NEVER KNOW IF YOU'RE      !
+!    LETTING YOUR USERS DOWN. YOU SHOULD ADD A HEALTHCHECK FOR EACH OF YOUR    !
+!         APPLICATION'S DEPENDENCIES WHICH FULLY (BUT LIGHTLY) TESTS IT.       !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+INFO  [2016-08-17 01:55:22,563] org.eclipse.jetty.server.handler.ContextHandler: Started i.d.j.MutableServletContextHandler@34e20e6b{/,null,AVAILABLE}
+INFO  [2016-08-17 01:55:22,673] org.eclipse.jetty.server.AbstractConnector: Started application@464649c{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+INFO  [2016-08-17 01:55:22,695] org.eclipse.jetty.server.AbstractConnector: Started admin@7c22d4f{HTTP/1.1,[http/1.1]}{0.0.0.0:8001}
+INFO  [2016-08-17 01:55:22,696] org.eclipse.jetty.server.Server: Started @6727ms
+INFO  [2016-08-17 01:56:08,864] org.eclipse.jetty.server.AbstractConnector: Stopped application@464649c{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+INFO  [2016-08-17 01:56:08,866] org.eclipse.jetty.server.AbstractConnector: Stopped admin@7c22d4f{HTTP/1.1,[http/1.1]}{0.0.0.0:8001}
+INFO  [2016-08-17 01:56:08,867] org.eclipse.jetty.server.handler.ContextHandler: Stopped i.d.j.MutableServletContextHandler@34e20e6b{/,null,UNAVAILABLE}
+INFO  [2016-08-17 01:56:08,878] org.eclipse.jetty.server.handler.ContextHandler: Stopped i.d.j.MutableServletContextHandler@3c904f1e{/,null,UNAVAILABLE}
