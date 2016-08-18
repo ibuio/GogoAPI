@@ -1,11 +1,19 @@
 package ca.ibu.api;
 
-import ca.ibu.api.resources.HelloResource;
+// javax
+import javax.ws.rs.client.Client;
+
+// dw
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.client.JerseyClientBuilder;
+
+// ibu
+import ca.ibu.api.client.Auth0JerseyClient;
+import ca.ibu.api.resources.HelloResource;
 
 public class gogoapiApplication extends Application<gogoapiConfiguration> {
 
@@ -34,7 +42,11 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
 //                    .setAuthorizer(new FilterAuthorizer())
 //                    .setPrefix("Bearer")
 //                    .buildAuthFilter()));
+        final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration())
+                .build(getName());
         environment.jersey().register(new HelloResource());
+        environment.jersey().register(new Auth0JerseyClient(client));
+        
         //TwilioClient twilioC = configuration.getTwilioFactory().build(environment);
     }
 

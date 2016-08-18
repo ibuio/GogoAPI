@@ -50,7 +50,7 @@ import ca.ibu.api.api.annotation.Secured;
 public class AuthenticationFilter implements ContainerRequestFilter {
 
     private JWTVerifier jwtVerifier;
-    static final Logger LOG = LoggerFactory.getLogger(AuthorizationFilter.class);
+    static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     @Context
     HttpServletRequest  request;

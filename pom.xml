@@ -44,6 +44,13 @@
 			<artifactId>dropwizard-testing</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.dropwizard/dropwizard-client -->
+		<dependency>
+			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-client</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 
 		<!-- Mongo -->
 		<dependency>

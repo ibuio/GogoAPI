@@ -1,11 +1,15 @@
 package ca.ibu.api;
 
-import io.dropwizard.Configuration;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.*;
-
+// javax
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+
+// dw
+import io.dropwizard.Configuration;
+import io.dropwizard.client.JerseyClientConfiguration;
+
+// jackson
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class gogoapiConfiguration extends Configuration {
     @Valid
@@ -20,5 +24,14 @@ public class gogoapiConfiguration extends Configuration {
     @JsonProperty("messageQueue")
     public void setTwilioFactory(TwilioFactory factory) {
         this.twilio = factory;
+    }
+    
+    @Valid
+    @NotNull
+    private JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration();
+
+    @JsonProperty("jerseyClient")
+    public JerseyClientConfiguration getJerseyClientConfiguration() {
+        return jerseyClient;
     }
 }
