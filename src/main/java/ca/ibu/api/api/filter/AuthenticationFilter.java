@@ -22,6 +22,8 @@ import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
@@ -39,6 +41,8 @@ import com.auth0.jwt.JWTVerifyException;
 
 // ibu
 import ca.ibu.api.api.annotation.Secured;
+import ca.ibu.api.client.Auth0JerseyClient;
+import io.dropwizard.client.JerseyClientBuilder;
 
 /**
  * @author jk
@@ -51,6 +55,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private JWTVerifier jwtVerifier;
     static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
+    private Auth0JerseyClient auth0Client;
 
     @Context
     HttpServletRequest  request;
@@ -66,7 +71,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String token = null;
         String username = null;
         Map<String, Object> decoded = null;
-
+        Client client = ClientBuilder.newClient();
+        auth0Client = new Auth0JerseyClient(client);
+        Response resp = null;
+        
+        
         new Base64(true);
         // instanciate token verifier object
         // Base64.getDecoder().decode(encoded);
@@ -79,10 +88,20 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             // Validate the token
             decoded = validateToken(token);
+            
+            resp = auth0Client.getUser(token);
+            if(resp.getStatus() == 200) {
+                LOG.debug("User access_token is valid. User info: {}", resp.readEntity(String.class));
+            }
+            else {
+                String strJError = "{\"message\":\"The authentication token could not be verified.\"}";
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type("application/json").entity(strJError).build());
+            }
         }
         catch (Exception e) {
             LOG.error("Exception while validating token.", e);
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            String strJError = "{\"message\":\"The authentication token could not be verified.\"}";
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type("application/json").entity(strJError).build());
         }
     }
 

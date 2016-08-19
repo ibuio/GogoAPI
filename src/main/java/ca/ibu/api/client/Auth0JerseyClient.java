@@ -12,10 +12,13 @@ package ca.ibu.api.client;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 // slf4j
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.dropwizard.setup.Environment;
 
 /**
  * @author jk
@@ -27,9 +30,9 @@ public class Auth0JerseyClient {
     
     private Client client;
     private WebTarget webTarget;
-    private static String TOKEN = System.getenv("AUTH0_API_TOKEN");
-    private static String HEADERKEYNAME = "Authorization";
-    
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String TOKEN_PREFIX = "Bearer ";
+    private static final String TOKEN = System.getenv("AUTH0_API_TOKEN");
     
     /**
      * @param client
@@ -45,15 +48,15 @@ public class Auth0JerseyClient {
      * @param userToken
      * @return
      */
-    public String getUser(String userToken) {
+    public Response getUser(String userToken) {
         LOG.info("Auth0JerseyClient::getUser");
         
-        String entity = client.target(System.getenv("AUTH0_API_ROOT_URL"))
+        Response resp = client.target(System.getenv("AUTH0_API_ROOT_URL"))
                 .path("userinfo")
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken)
-                .get(String.class);
+                .get();
         
-        return entity;
+        return resp;
     }
 }
