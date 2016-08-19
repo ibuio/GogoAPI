@@ -20,6 +20,15 @@ public class gogoapiConfiguration extends Configuration {
     public TwilioFactory getTwilioFactory() {
         return twilio;
     }
+    
+    @Valid
+    @NotNull
+    private Auth0Factory auth0 = new Auth0Factory();
+    
+    @JsonProperty("auth0")
+    public Auth0Factory getAuth0Factory() {
+        return auth0;
+    }
 
     @JsonProperty("messageQueue")
     public void setTwilioFactory(TwilioFactory factory) {
@@ -34,4 +43,6 @@ public class gogoapiConfiguration extends Configuration {
     public JerseyClientConfiguration getJerseyClientConfiguration() {
         return jerseyClient;
     }
+    
+    
 }

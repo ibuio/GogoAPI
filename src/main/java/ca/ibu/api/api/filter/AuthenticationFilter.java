@@ -31,7 +31,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.commons.codec.binary.Base64;
+import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,6 @@ import com.auth0.jwt.JWTVerifyException;
 // ibu
 import ca.ibu.api.api.annotation.Secured;
 import ca.ibu.api.client.Auth0JerseyClient;
-import io.dropwizard.client.JerseyClientBuilder;
 
 /**
  * @author jk
@@ -71,27 +70,32 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String token = null;
         String username = null;
         Map<String, Object> decoded = null;
-        Client client = ClientBuilder.newClient();
-        auth0Client = new Auth0JerseyClient(client);
+        Client client;
+        //Client client = ClientBuilder.newClient();
         Response resp = null;
+        String strJUser = null;
+        
+        ClientConfig clientConfig = new ClientConfig();
+        client = ClientBuilder.newClient(clientConfig);
+        auth0Client = new Auth0JerseyClient(client);
         
         
-        new Base64(true);
+        //new Base64(true);
         // instanciate token verifier object
         // Base64.getDecoder().decode(encoded);
         // jwtVerifier = new JWTVerifier(Base64.getDecoder().decode(System.getenv("AUTH0_CLIENT_SECRET")), System.getenv("AUTH0_CLIENT_ID"));
-        jwtVerifier = new JWTVerifier(Base64.decodeBase64(System.getenv("AUTH0_CLIENT_SECRET")), System.getenv("AUTH0_CLIENT_ID"));
+        //jwtVerifier = new JWTVerifier(Base64.decodeBase64(System.getenv("AUTH0_CLIENT_SECRET")), System.getenv("AUTH0_CLIENT_ID"));
 
         try {
             // get token from header
             token = getToken(requestContext);
 
             // Validate the token
-            decoded = validateToken(token);
+            //decoded = validateToken(token);
             
-            resp = auth0Client.getUser(token);
-            if(resp.getStatus() == 200) {
-                LOG.debug("User access_token is valid. User info: {}", resp.readEntity(String.class));
+            strJUser = auth0Client.getUser(token);
+            if(strJUser != null) {
+                LOG.debug("User access_token is valid. User info: " +  strJUser);
             }
             else {
                 String strJError = "{\"message\":\"The authentication token could not be verified.\"}";
@@ -154,8 +158,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
      */
     private Map<String, Object> validateToken(String token) throws NoSuchAlgorithmException, InvalidKeyException, IllegalStateException, IOException, SignatureException, JWTVerifyException {
         //logger.traceEntry();
-
-        return logger.traceExit(jwtVerifier.verify(token));
+        return jwtVerifier.verify(token);
     }
 
 }

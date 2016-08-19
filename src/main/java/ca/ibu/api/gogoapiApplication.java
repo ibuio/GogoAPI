@@ -1,5 +1,6 @@
 package ca.ibu.api;
 
+import javax.servlet.FilterRegistration;
 // javax
 import javax.ws.rs.client.Client;
 
@@ -10,7 +11,7 @@ import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.client.JerseyClientBuilder;
-
+import ca.ibu.api.api.filter.AuthenticationFilter;
 // ibu
 import ca.ibu.api.client.Auth0JerseyClient;
 import ca.ibu.api.resources.HelloResource;
@@ -36,12 +37,10 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
 
     @Override
     public void run(final gogoapiConfiguration configuration, final Environment environment) {
-//        environment.jersey().register(new AuthDynamicFeature(
-//                new OAuthCredentialAuthFilter.Builder<User>()
-//                    .setAuthenticator(new FilterOAuthAuthenticator())
-//                    .setAuthorizer(new FilterAuthorizer())
-//                    .setPrefix("Bearer")
-//                    .buildAuthFilter()));
+
+        // Enable CORS headers
+        environment.jersey().register(AuthenticationFilter.class);
+        
         final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration())
                 .build(getName());
         environment.jersey().register(new HelloResource());

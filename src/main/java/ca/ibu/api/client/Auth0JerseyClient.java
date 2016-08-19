@@ -18,8 +18,6 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.dropwizard.setup.Environment;
-
 /**
  * @author jk
  *
@@ -38,7 +36,7 @@ public class Auth0JerseyClient {
      * @param client
      */
     public Auth0JerseyClient(Client client) {
-        LOG.info("Auth0JerseyClient::Auth0JerseyClient");
+        LOG.info("Auth0JerseyClient");
         
         this.client = client;
         webTarget = client.target(System.getenv("AUTH0_API_ROOT_URL"));
@@ -48,15 +46,23 @@ public class Auth0JerseyClient {
      * @param userToken
      * @return
      */
-    public Response getUser(String userToken) {
-        LOG.info("Auth0JerseyClient::getUser");
+    public String getUser(String userToken) {
+        LOG.info("getUser");
         
-        Response resp = client.target(System.getenv("AUTH0_API_ROOT_URL"))
+        Response resp = null;
+        String strJUser = null;
+        strJUser = client.target(System.getenv("AUTH0_API_ROOT_URL"))
                 .path("userinfo")
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken)
-                .get();
+                .get(String.class);
         
-        return resp;
+        //LOG.debug("resp status: " + resp.getStatus());
+        
+        //strJUser = resp.getEntity().toString();
+        
+        LOG.debug("Response entity: " + strJUser);
+        
+        return strJUser;
     }
 }
