@@ -12,6 +12,7 @@ package ca.ibu.api.api.filter;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.SignatureException;
 // import java.util.Base64;
 import java.util.Map;
@@ -29,9 +30,11 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.client.ClientConfig;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +72,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         String token = null;
         String username = null;
+        String role = null;
         Map<String, Object> decoded = null;
         Client client;
         //Client client = ClientBuilder.newClient();
@@ -80,22 +84,21 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         auth0Client = new Auth0JerseyClient(client);
         
         
-        //new Base64(true);
-        // instanciate token verifier object
-        // Base64.getDecoder().decode(encoded);
-        // jwtVerifier = new JWTVerifier(Base64.getDecoder().decode(System.getenv("AUTH0_CLIENT_SECRET")), System.getenv("AUTH0_CLIENT_ID"));
-        //jwtVerifier = new JWTVerifier(Base64.decodeBase64(System.getenv("AUTH0_CLIENT_SECRET")), System.getenv("AUTH0_CLIENT_ID"));
-
         try {
-            // get token from header
+            // get the access token from header
             token = getToken(requestContext);
 
-            // Validate the token
-            //decoded = validateToken(token);
-            
+            // get the user corresponding to the given access token
             strJUser = auth0Client.getUser(token);
             if(strJUser != null) {
                 LOG.debug("User access_token is valid. User info: " +  strJUser);
+                
+                JSONObject jUser = new JSONObject(strJUser);
+                username = jUser.getString("user_id");
+                role = jUser.getJSONObject("user_metadata").getString("role");
+                setUserPrincipal(requestContext, username);
+                requestContext.setProperty("role", role);
+
             }
             else {
                 String strJError = "{\"message\":\"The authentication token could not be verified.\"}";
@@ -159,6 +162,42 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private Map<String, Object> validateToken(String token) throws NoSuchAlgorithmException, InvalidKeyException, IllegalStateException, IOException, SignatureException, JWTVerifyException {
         //logger.traceEntry();
         return jwtVerifier.verify(token);
+    }
+
+    /**
+     * @param requestContext
+     * @param username
+     */
+    private void setUserPrincipal(ContainerRequestContext requestContext, final String username) {
+        requestContext.setSecurityContext(new SecurityContext() {
+
+            @Override
+            public Principal getUserPrincipal() {
+
+                return new Principal() {
+
+                    @Override
+                    public String getName() {
+                        return username;
+                    }
+                };
+            }
+
+            @Override
+            public boolean isUserInRole(String role) {
+                return true;
+            }
+
+            @Override
+            public boolean isSecure() {
+                return false;
+            }
+
+            @Override
+            public String getAuthenticationScheme() {
+                return null;
+            }
+        });
     }
 
 }

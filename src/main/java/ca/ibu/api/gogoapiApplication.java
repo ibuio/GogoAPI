@@ -1,6 +1,5 @@
 package ca.ibu.api;
 
-import javax.servlet.FilterRegistration;
 // javax
 import javax.ws.rs.client.Client;
 
@@ -12,6 +11,8 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.client.JerseyClientBuilder;
 import ca.ibu.api.api.filter.AuthenticationFilter;
+import ca.ibu.api.api.filter.AuthorizationFilter;
+
 // ibu
 import ca.ibu.api.client.Auth0JerseyClient;
 import ca.ibu.api.resources.HelloResource;
@@ -38,15 +39,15 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
     @Override
     public void run(final gogoapiConfiguration configuration, final Environment environment) {
 
-        // Enable CORS headers
+        // Auth Filters
         environment.jersey().register(AuthenticationFilter.class);
+        environment.jersey().register(AuthorizationFilter.class);
         
         final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration())
                 .build(getName());
         environment.jersey().register(new HelloResource());
         environment.jersey().register(new Auth0JerseyClient(client));
         
-        //TwilioClient twilioC = configuration.getTwilioFactory().build(environment);
     }
 
 }

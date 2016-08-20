@@ -12,7 +12,6 @@ package ca.ibu.api.client;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 // slf4j
 import org.slf4j.Logger;
@@ -28,9 +27,9 @@ public class Auth0JerseyClient {
     
     private Client client;
     private WebTarget webTarget;
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String TOKEN_PREFIX = "Bearer ";
-    private static final String TOKEN = System.getenv("AUTH0_API_TOKEN");
+    //private static final String AUTHORIZATION_HEADER = "Authorization";
+    //private static final String TOKEN_PREFIX = "Bearer ";
+    //private static final String TOKEN = System.getenv("AUTH0_API_TOKEN");
     
     /**
      * @param client
@@ -49,7 +48,7 @@ public class Auth0JerseyClient {
     public String getUser(String userToken) {
         LOG.info("getUser");
         
-        Response resp = null;
+        //Response resp = null;
         String strJUser = null;
         strJUser = client.target(System.getenv("AUTH0_API_ROOT_URL"))
                 .path("userinfo")
@@ -57,11 +56,8 @@ public class Auth0JerseyClient {
                 .header("Authorization", "Bearer " + userToken)
                 .get(String.class);
         
-        //LOG.debug("resp status: " + resp.getStatus());
         
-        //strJUser = resp.getEntity().toString();
-        
-        LOG.debug("Response entity: " + strJUser);
+        LOG.info("Response entity: " + strJUser);
         
         return strJUser;
     }
