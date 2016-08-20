@@ -4,6 +4,8 @@ package ca.ibu.api;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 // dw
 import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientConfiguration;
@@ -35,6 +37,9 @@ public class gogoapiConfiguration extends Configuration {
         this.twilio = factory;
     }
     
+    /*
+     * Jersey client
+     */
     @Valid
     @NotNull
     private JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration();
@@ -43,6 +48,22 @@ public class gogoapiConfiguration extends Configuration {
     public JerseyClientConfiguration getJerseyClientConfiguration() {
         return jerseyClient;
     }
+
+    /*
+     * MONGO DB MongoLab
+     */
+    @JsonProperty
+    @NotEmpty
+    public String mongohost = System.getenv("MONGO_HOST");
+ 
+    @JsonProperty
+    @Min(1)
+    @Max(65535)
+    public int mongoport = Integer.parseInt(System.getenv("MONGO_PORT"));
+ 
+    @JsonProperty
+    @NotEmpty
+    public String mongodb = System.getenv("MONGO_DB");
     
     
 }

@@ -16,6 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.codahale.metrics.annotation.Timed;
+
 import ca.ibu.api.api.Enum.RoleEnum;
 import ca.ibu.api.api.annotation.Secured;
 
@@ -29,6 +31,7 @@ public class HelloResource {
     @GET
     @Secured(RoleEnum.gogoadmin)
     @Produces(MediaType.TEXT_PLAIN)
+    @Timed
     public String getGreeting() {
         return "Hello world!";
     }
