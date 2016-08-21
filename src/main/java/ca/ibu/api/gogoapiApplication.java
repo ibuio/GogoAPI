@@ -1,13 +1,20 @@
 package ca.ibu.api;
 
+
+// java
+import java.util.Arrays;
 import java.net.UnknownHostException;
 
 // javax
 import javax.ws.rs.client.Client;
 
+// mongodb
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoDatabase;
 
 // dw
 import io.dropwizard.Application;
@@ -55,10 +62,16 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
          * Health Checks
          */
         // Mongo DB
-        MongoClient mongo = new MongoClient("localhost", 27017);
-        MongoManaged mongoManaged = new MongoManaged(mongo);
+        MongoCredential credential = MongoCredential.createCredential(configuration.mongouser, configuration.mongodb, configuration.mongopassword.toCharArray());
+        MongoClient mongoClient = new MongoClient(new ServerAddress(), Arrays.asList(credential));
+        
+        //MongoClient mongoClient = new MongoClient(configuration.mongohost, configuration.mongoport);
+        //MongoDatabase db = mongoClient.getDatabase(configuration.mongodb);
+        //boolean auth = db.authenticate("username", "password".toCharArray());
+        
+        MongoManaged mongoManaged = new MongoManaged(mongoClient);
         environment.lifecycle().manage(mongoManaged);
-        environment.healthChecks().register("mongodb", new MongoHealthCheck(mongo));
+        environment.healthChecks().register("mongodb", new MongoHealthCheck(mongoClient));
 
         /*
          * jersey client

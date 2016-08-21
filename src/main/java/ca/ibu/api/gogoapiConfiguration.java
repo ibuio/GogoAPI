@@ -65,5 +65,12 @@ public class gogoapiConfiguration extends Configuration {
     @NotEmpty
     public String mongodb = System.getenv("MONGO_DB");
     
+    @JsonProperty
+    @NotEmpty
+    public String mongouser = System.getenv("MONGO_APP_USER");
+    
+    @JsonProperty
+    @NotEmpty
+    public String mongopassword = System.getenv("MONGO_APP_USER_PASSWORD");
     
 }

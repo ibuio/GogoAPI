@@ -18,21 +18,20 @@ import com.mongodb.MongoException;
  */
 public class MongoHealthCheck extends HealthCheck {
 
-    private MongoClient mongo;
+    private MongoClient mongoClient;
 
-    public MongoHealthCheck(MongoClient mongo) {
-        //super();
-        this.mongo = mongo;
+    public MongoHealthCheck(MongoClient _mongoClient) {
+        this.mongoClient = _mongoClient;
     }
 
     @Override
     protected Result check() throws Exception {
         try {
-            mongo.getDatabaseNames();
+            mongoClient.getDatabase(System.getenv("MONGO_DB"));
             return Result.healthy();
         }
         catch (MongoException e) {
-            return Result.unhealthy("Cannot connect to " + mongo.getAddress());
+            return Result.unhealthy("Cannot connect to " + mongoClient.getAddress());
         }
     }
 
