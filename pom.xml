@@ -63,6 +63,13 @@
 			<artifactId>mongo-jackson-mapper</artifactId>
 			<version>1.4.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
 
 		<!-- auth0 - jwt -->
 		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
