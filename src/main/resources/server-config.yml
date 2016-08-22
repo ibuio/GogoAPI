@@ -22,12 +22,3 @@ server:
   adminConnectors:
   - type: http
     port: 8001
-#twilio:
-#    accountsid: ACfc6abc644bcdf94532df4e1be88aecae
-#    authtoken: b48c94e8c2eaef57eedfeb43033fd6ea
-#    numbers: "+14387950258"
-#auth0:
-#    rooturl: https://ibuio.auth0.com
-    
-    # get all auth0 user info
-#    userinfosuburl: userinfo

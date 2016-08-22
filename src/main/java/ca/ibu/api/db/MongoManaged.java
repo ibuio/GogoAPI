@@ -8,6 +8,11 @@
  */
 package ca.ibu.api.db;
 
+import java.util.Arrays;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 // mongo
 import com.mongodb.MongoClient;
 
@@ -20,11 +25,13 @@ import io.dropwizard.lifecycle.Managed;
  *
  */
 public class MongoManaged implements Managed {
+
+    static final Logger LOG = LoggerFactory.getLogger(MongoManaged.class);
  
-    private MongoClient mongo;
+    private MongoClient mongoClient;
  
     public MongoManaged(MongoClient mongo) {
-        this.mongo = mongo;
+        this.mongoClient = mongo;
     }
 
     /* (non-Javadoc)
@@ -32,8 +39,9 @@ public class MongoManaged implements Managed {
      */
     @Override
     public void start() throws Exception {
-        // TODO Auto-generated method stub
-
+        LOG.info("MongoClient is starting up...");
+        
+        //LOG.info(mongoClient.getAddress().getHost());
     }
 
     /* (non-Javadoc)
@@ -41,7 +49,8 @@ public class MongoManaged implements Managed {
      */
     @Override
     public void stop() throws Exception {
-        mongo.close();
+        LOG.info("MongoClient is being shut down...");
+        mongoClient.close();
     }
 
 }

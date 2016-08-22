@@ -9,12 +9,10 @@ import java.net.UnknownHostException;
 import javax.ws.rs.client.Client;
 
 // mongodb
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
-import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoDatabase;
 
 // dw
 import io.dropwizard.Application;
@@ -63,11 +61,10 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
          */
         // Mongo DB
         MongoCredential credential = MongoCredential.createCredential(configuration.mongouser, configuration.mongodb, configuration.mongopassword.toCharArray());
-        MongoClient mongoClient = new MongoClient(new ServerAddress(), Arrays.asList(credential));
-        
-        //MongoClient mongoClient = new MongoClient(configuration.mongohost, configuration.mongoport);
-        //MongoDatabase db = mongoClient.getDatabase(configuration.mongodb);
-        //boolean auth = db.authenticate("username", "password".toCharArray());
+        MongoClient mongoClient = new MongoClient(new ServerAddress(configuration.mongohost, configuration.mongoport), Arrays.asList(credential));
+        //   mongodb://<dbuser>:<dbpassword>@connectionurl:port/dbname
+        //MongoClientURI uri  = new MongoClientURI("mongodb://" + configuration.mongouser + ":" + configuration.mongopassword + "@" + configuration.mongohost + ":" + configuration.mongoport + "/" + configuration.mongodb); 
+        //MongoClient mongoClient = new MongoClient(uri);
         
         MongoManaged mongoManaged = new MongoManaged(mongoClient);
         environment.lifecycle().manage(mongoManaged);
