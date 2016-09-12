@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import javax.ws.rs.client.Client;
 
 // mongodb
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
@@ -21,13 +22,18 @@ import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.client.JerseyClientBuilder;
-import ca.ibu.api.api.filter.AuthenticationFilter;
-import ca.ibu.api.api.filter.AuthorizationFilter;
+
+// mongob
+import net.vz.mongodb.jackson.JacksonDBCollection;
 
 // ibu
+import ca.ibu.api.api.pojo.DancerAgency;
+import ca.ibu.api.api.filter.AuthenticationFilter;
+import ca.ibu.api.api.filter.AuthorizationFilter;
 import ca.ibu.api.client.Auth0JerseyClient;
 import ca.ibu.api.db.MongoManaged;
 import ca.ibu.api.health.MongoHealthCheck;
+import ca.ibu.api.resources.DancerAgencyResource;
 import ca.ibu.api.resources.HelloResource;
 
 public class gogoapiApplication extends Application<gogoapiConfiguration> {
@@ -75,10 +81,14 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
          */
         final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
 
+        DB db = mongoClient.getDB(configuration.mongodb);//mongo.getDB(configuration.mongodb);
+        JacksonDBCollection<DancerAgency, String> agencies = JacksonDBCollection.wrap(db.getCollection("agencies"), DancerAgency.class, String.class);
+
         /*
          * Resources (REST Services)
          */
         environment.jersey().register(new HelloResource());
+        environment.jersey().register(new DancerAgencyResource(agencies));
         environment.jersey().register(new Auth0JerseyClient(client));
 
     }
