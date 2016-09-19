@@ -25,9 +25,10 @@ public class DancerAgency implements Serializable {
     /**
      * 
      */
-    private static final long serialVersionUID = 7771280381454276179L;
+    private static final long serialVersionUID = -3376104097910980443L;
 
-    
+
+    @NotBlank
     private String id = UUID.randomUUID().toString();
     
     @NotBlank

@@ -8,12 +8,16 @@ import java.net.UnknownHostException;
 // javax
 import javax.ws.rs.client.Client;
 
+import org.bson.Document;
+
 // mongodb
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 // dw
 import io.dropwizard.Application;
@@ -66,6 +70,7 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
          * Health Checks
          */
         // Mongo DB
+        // http://mongodb.github.io/mongo-java-driver/3.3/driver/reference/connecting/
         MongoCredential credential = MongoCredential.createCredential(configuration.mongouser, configuration.mongodb, configuration.mongopassword.toCharArray());
         MongoClient mongoClient = new MongoClient(new ServerAddress(configuration.mongohost, configuration.mongoport), Arrays.asList(credential));
         //   mongodb://<dbuser>:<dbpassword>@connectionurl:port/dbname
@@ -80,15 +85,17 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
          * jersey client
          */
         final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
+        //JacksonDBCollection<DancerAgency, String> agencies = JacksonDBCollection.wrap(db.getCollection("agencies"), DancerAgency.class, String.class);
 
-        DB db = mongoClient.getDB(configuration.mongodb);//mongo.getDB(configuration.mongodb);
-        JacksonDBCollection<DancerAgency, String> agencies = JacksonDBCollection.wrap(db.getCollection("agencies"), DancerAgency.class, String.class);
+        MongoDatabase database = mongoClient.getDatabase(configuration.mongodb);
+        MongoCollection<Document> collAgencies = database.getCollection("agencies");
+
 
         /*
          * Resources (REST Services)
          */
         environment.jersey().register(new HelloResource());
-        environment.jersey().register(new DancerAgencyResource(agencies));
+        environment.jersey().register(new DancerAgencyResource(collAgencies));
         environment.jersey().register(new Auth0JerseyClient(client));
 
     }
