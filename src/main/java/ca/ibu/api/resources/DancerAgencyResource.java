@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 
 // bson
 import org.bson.Document;
+import org.mongodb.morphia.Datastore;
 
 // metrics
 import com.codahale.metrics.annotation.Timed;
@@ -50,31 +51,36 @@ import ca.ibu.api.api.pojo.DancerAgency;
 public class DancerAgencyResource {
 
     // private JacksonDBCollection<DancerAgency, String> collection;
-    private MongoCollection<Document> collection;
+    //private MongoCollection<Document> collection;
+    private Datastore datastore;
 
     // public DancerAgencyResource(JacksonDBCollection<DancerAgency, String> agencies) {
     // this.collection = agencies;
     // }
-    public DancerAgencyResource(MongoCollection<Document> agencies) {
-        this.collection = agencies;
+    
+    //public DancerAgencyResource(MongoCollection<Document> agencies) {
+    //    this.collection = agencies;
+    //}
+    public DancerAgencyResource(Datastore datastore) {
+        this.datastore = datastore;
     }
 
     /**
      * @param id
      * @return
      */
-    @GET
-    @Path("{id}")
-    @Timed
-    public Response getDancerAgency(@PathParam("id") String id) {
-        Document doc = Document.parse(this.collection.find(eq("id", id)).first().toJson());
-
-        if (doc != null) {
-            return Response.status(Status.FOUND).entity(doc).build();
-        }
-        else
-            return Response.status(Status.NO_CONTENT).build();
-    }
+//    @GET
+//    @Path("{id}")
+//    @Timed
+//    public Response getDancerAgency(@PathParam("id") String id) {
+//        Document doc = Document.parse(this.collection.find(eq("id", id)).first().toJson());
+//
+//        if (doc != null) {
+//            return Response.status(Status.FOUND).entity(doc).build();
+//        }
+//        else
+//            return Response.status(Status.NO_CONTENT).build();
+//    }
 
     /**
      * @return
@@ -107,17 +113,21 @@ public class DancerAgencyResource {
     @Timed
     public Response createDancerAgency(@Valid DancerAgency agency) {
 
-        Gson gson = new Gson();
-
-        // Parse to bson document and insert
-        Document doc = Document.parse(gson.toJson(agency));
-
-        try {
-            collection.insertOne(doc);
-        }
-        catch (MongoWriteException | MongoWriteConcernException e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-        }
+        datastore.save(agency);
         return Response.status(Status.CREATED).entity(agency).build();
+        
+        
+//        Gson gson = new Gson();
+//
+//        // Parse to bson document and insert
+//        Document doc = Document.parse(gson.toJson(agency));
+//
+//        try {
+//            collection.insertOne(doc);
+//        }
+//        catch (MongoWriteException | MongoWriteConcernException e) {
+//            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+//        }
+//        return Response.status(Status.CREATED).entity(agency).build();
     }
 }

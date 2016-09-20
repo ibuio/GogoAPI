@@ -12,26 +12,36 @@ package ca.ibu.api.api.pojo;
 import java.io.Serializable;
 import java.util.UUID;
 
+// bson
+import org.bson.types.ObjectId;
+
 // hibernate
 import org.hibernate.validator.constraints.NotBlank;
+
+// mongodb
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.annotations.Property;
 
 /**
  * @author jk
  *
  */
-
-public class DancerAgency implements Serializable {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -3376104097910980443L;
+@Entity("agencies")
+@Indexes(
+        @Index(fields = @Field("name"))
+       )
+public class DancerAgency{
 
 
-    @NotBlank
-    private String id = UUID.randomUUID().toString();
+    @Id
+    private ObjectId id;
     
     @NotBlank
+    //@Property("a_different_name") // annotiation @Property would be use to serialize property with a different name 
     private String name;
     
     @NotBlank
@@ -39,6 +49,8 @@ public class DancerAgency implements Serializable {
     
     @NotBlank
     private String phone;
+    
+    // @Reference for a property that references another pojo
 
     
     public String getName() {
@@ -70,7 +82,7 @@ public class DancerAgency implements Serializable {
     }
 
     
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 

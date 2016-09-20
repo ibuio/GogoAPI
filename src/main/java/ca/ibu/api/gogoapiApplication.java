@@ -3,17 +3,16 @@ package ca.ibu.api;
 
 // java
 import java.util.Arrays;
-import java.net.UnknownHostException;
 
 // javax
 import javax.ws.rs.client.Client;
 
 import org.bson.Document;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
 
 // mongodb
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
@@ -28,10 +27,10 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.client.JerseyClientBuilder;
 
 // mongob
-import net.vz.mongodb.jackson.JacksonDBCollection;
+//import net.vz.mongodb.jackson.JacksonDBCollection;
 
 // ibu
-import ca.ibu.api.api.pojo.DancerAgency;
+//import ca.ibu.api.api.pojo.DancerAgency;
 import ca.ibu.api.api.filter.AuthenticationFilter;
 import ca.ibu.api.api.filter.AuthorizationFilter;
 import ca.ibu.api.client.Auth0JerseyClient;
@@ -81,21 +80,27 @@ public class gogoapiApplication extends Application<gogoapiConfiguration> {
         environment.lifecycle().manage(mongoManaged);
         environment.healthChecks().register("mongodb", new MongoHealthCheck(mongoClient));
 
+        Morphia morphia = new Morphia();
+        morphia.mapPackage("ca.ibu.api.api.pojo");
+        Datastore datastore = morphia.createDatastore(mongoClient, configuration.mongodb);
+        datastore.ensureIndexes();
+        
         /*
          * jersey client
          */
         final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
         //JacksonDBCollection<DancerAgency, String> agencies = JacksonDBCollection.wrap(db.getCollection("agencies"), DancerAgency.class, String.class);
 
-        MongoDatabase database = mongoClient.getDatabase(configuration.mongodb);
-        MongoCollection<Document> collAgencies = database.getCollection("agencies");
+        //MongoDatabase database = mongoClient.getDatabase(configuration.mongodb);
+        //MongoCollection<Document> collAgencies = database.getCollection("agencies");
 
 
         /*
          * Resources (REST Services)
          */
         environment.jersey().register(new HelloResource());
-        environment.jersey().register(new DancerAgencyResource(collAgencies));
+        //environment.jersey().register(new DancerAgencyResource(collAgencies));
+        environment.jersey().register(new DancerAgencyResource(datastore));
         environment.jersey().register(new Auth0JerseyClient(client));
 
     }
